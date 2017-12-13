@@ -1,79 +1,124 @@
-import React, { Component } from 'react';
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import classNames from 'classnames';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
-import {MenuItem, MenuList} from 'material-ui/Menu';
+import IconButton from 'material-ui/IconButton';
+import { Route } from 'react-router-dom';
+import SideBar from '../../components/side-bar'
 
-const theme = createMuiTheme()
-const styles = {
+
+const drawerWidth = 240;
+const styles = theme => ({
   root: {
     width: '100%',
+    height: '100%',
+    zIndex: 1,
+    overflow: 'hidden',
   },
-  flex: {
-    flex: 1,
+  appFrame: {
+    position: 'relative',
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+  },
+  appBar: {
+    position: 'absolute',
+    zIndex: theme.zIndex.navDrawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+    marginLeft: 12,
+    marginRight: 36,
   },
-  contentBox: {
-    display: 'flex'
+  content: {
+    width: '100%',
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: 24,
+    height: 'calc(100% - 56px)',
+    marginTop: 56,
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100% - 64px)',
+      marginTop: 64,
+    },
   }
-};
+});
 
-class Backstage extends Component {
-  constructor(props) {
-    super(props)
-    this.switchMenu = this.switchMenu.bind(this)
-  }
-  state = {
-    displayMenu: false,
-  }
-  switchMenu() {
-    this.setState({displayMenu: !this.state.displayMenu})
-  }
-  render () {
-    const { classes } = this.props;
-    return (
-      <MuiThemeProvider theme={theme}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="contrast" aria-label="Menu"
-              onClick={this.switchMenu}>
-              <MenuIcon />
-            </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
-              Title
-            </Typography>
-            <Button color="contrast">Login</Button>
-          </Toolbar>
-        </AppBar>
-        <div className={classes.contentBox}>
-          <Paper>
-            <MenuList
-              id="menu-appbar"
-              open={this.state.displayMenu}
-            >
-              <MenuItem onClick={this.handleRequestClose}>Profile</MenuItem>
-              <MenuItem onClick={this.handleRequestClose}>My account</MenuItem>
-            </MenuList>
-          </Paper>
-          <div className="content">
-            content
-          </div>
-        </div>
-      </MuiThemeProvider>
-    )
+class Issue extends React.Component {
+  render() {
+    return <div> issues </div>
   }
 }
+class Folder extends React.Component {
+  render() {
+    return <div> folder </div>
+  }
+}
+
+class Backstage extends React.Component {
+  state = {
+    open: false,
+  };
+
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleDrawerClose = () => {
+    this.setState({ open: false });
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <div className={classes.appFrame}>
+          <AppBar className={classNames(classes.appBar, this.state.open && classes.appBarShift)}>
+            <Toolbar disableGutters={!this.state.open}>
+              <IconButton
+                color="contrast"
+                aria-label="open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(classes.menuButton, this.state.open && classes.hide)}
+              >
+                <MenuIcon className={classes.middleIcon} />
+              </IconButton>
+              <Typography type="title" color="inherit" noWrap>
+                Mini variant drawer
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <SideBar open={this.state.open} handleDrawerClose={this.handleDrawerClose}/>
+          <main className={classes.content}>
+            <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
+            <Route path="/backstage/issue" component={Issue}/>
+            <Route path="/backstage/folder" component={Folder}/>
+          </main>
+        </div>
+      </div>
+    );
+  }
+}
+
 Backstage.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(Backstage);
+
+export default withStyles(styles, { withTheme: true })(Backstage);

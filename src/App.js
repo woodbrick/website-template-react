@@ -7,8 +7,7 @@ import Login from './views/login'
 
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
 
 
@@ -16,18 +15,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header> */}
         <Router>
-          <div>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/backstage">Backstage</Link></li>
-              <li><Link to="/login">Login</Link></li>
-            </ul>
-            <hr/>
+          <div className="container">
             <Route exact path="/" component={Home}/>
             <Route path="/backstage" component={Backstage}/>
             <Route path="/login" component={Login}/>
