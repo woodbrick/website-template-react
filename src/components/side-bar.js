@@ -10,8 +10,7 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
-import Icon from 'material-ui/Icon';
+import SvgIcon from 'material-ui/SvgIcon';
 
 
 const drawerWidth = 240;
@@ -51,21 +50,34 @@ const styles = theme => ({
     width: 36,
     height: 36,
   },
-  menuActive: {
+  active: {
     color: theme.palette.primary[500]
+  },
+  inActive: {
+    color: 'grey'
+  },
+  block: {
+    display: 'block'
+  },
+  inline: {
+    display: 'inline-block'
   }
 });
-
+const HomeIcon = props => (
+  <SvgIcon {...props}>
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+  </SvgIcon>
+);
 const maptMenuList = route => classes => arr => {
   return arr.map((item, index) => {
     return (
-      <ListItem button className={route === item.route && classes.menuActive} key={index}>
+      <ListItem button key={index}>
         <Route path={item.route} exact={true} children={({ match }) => (
-          <div className={match ? 'active' : ''}>
-            {match ? '> ' : ''}
-            <Link to={item.route}>{item.title}</Link>
-            <Icon className={classes.middleIcon}>{item.icon}</Icon>
-            <ListItemText primary="Issues" secondary="Jan 28, 2014" />
+          <div className={match ? classes.active : classes.inActive}>
+            <Link to={item.route} className={classes.block}>
+              <HomeIcon className={classNames(classes.middleIcon, match ? classes.active : classes.inActive)}>{item.icon}</HomeIcon>
+              <ListItemText className={classes.inline} primary={item.title} secondary="Jan 28, 2014" />
+            </Link>
           </div>
         )}/>
       </ListItem>
