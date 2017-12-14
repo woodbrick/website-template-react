@@ -9,7 +9,7 @@ import MenuIcon from 'material-ui-icons/Menu';
 import IconButton from 'material-ui/IconButton';
 import { Route } from 'react-router-dom';
 import SideBar from '../../components/side-bar'
-
+import Issue from './issue'
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -59,11 +59,6 @@ const styles = theme => ({
   }
 });
 
-class Issue extends React.Component {
-  render() {
-    return <div> issues </div>
-  }
-}
 class Folder extends React.Component {
   render() {
     return <div> folder </div>
@@ -85,7 +80,6 @@ class Backstage extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>
@@ -95,8 +89,7 @@ class Backstage extends React.Component {
                 color="contrast"
                 aria-label="open drawer"
                 onClick={this.handleDrawerOpen}
-                className={classNames(classes.menuButton, this.state.open && classes.hide)}
-              >
+                className={classNames(classes.menuButton, this.state.open && classes.hide)}>
                 <MenuIcon className={classes.middleIcon} />
               </IconButton>
               <Typography type="title" color="inherit" noWrap>
