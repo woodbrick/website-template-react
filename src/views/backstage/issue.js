@@ -1,4 +1,5 @@
 import Pagination from '../../components/pagination'
+import Table from '../../components/table'
 import React from 'react'
 
 class Issue extends React.Component {
@@ -23,7 +24,6 @@ class Issue extends React.Component {
         // eslint-disable-next-line no-param-reassign
         total = 0;
       }
- 
       this.setState({ total });
       console.log(this.state)
     }
@@ -50,6 +50,7 @@ class Issue extends React.Component {
     return (
       <div>
           <div> issue </div>
+          <Table />
           <Pagination
             total = { this.state.total }
             current = { this.state.number }
