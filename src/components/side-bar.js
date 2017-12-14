@@ -10,8 +10,6 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import SvgIcon from 'material-ui/SvgIcon';
-
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -47,44 +45,51 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   middleIcon: {
-    width: 36,
-    height: 36,
+    fontSize: '2.6rem'
   },
   active: {
-    color: theme.palette.primary[500]
+    color: theme.palette.primary[500],
+    '& h3':{
+      color: theme.palette.primary[500],
+      fontWeight: 'bold'
+    },
+    '& p':{
+      color: theme.palette.primary[500],
+    }
   },
   inActive: {
     color: 'grey'
   },
-  block: {
-    display: 'block'
+  menuLink: {
+    display: 'block',
+    padding: '12px',
+    width: '100%',
+    transition: 'all .5s'
   },
   inline: {
     display: 'inline-block'
+  },
+  menuItem: {
+    padding: 0
   }
 });
-const HomeIcon = props => (
-  <SvgIcon {...props}>
-    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-  </SvgIcon>
-);
+
 const maptMenuList = route => classes => arr => {
   return arr.map((item, index) => {
     return (
-      <ListItem button key={index}>
-        <Route path={item.route} exact={true} children={({ match }) => (
-          <div className={match ? classes.active : classes.inActive}>
-            <Link to={item.route} className={classes.block}>
-              <HomeIcon className={classNames(classes.middleIcon, match ? classes.active : classes.inActive)}>{item.icon}</HomeIcon>
+      <ListItem button key={index} className={classes.menuItem}>
+        <Link to={item.route} className={classes.menuLink}>
+          <Route path={item.route} exact={true} children={({ match }) => (
+            <div className={match ? classes.active : classes.inActive}>
+              <i className={classNames("material-icons", classes.middleIcon)}>{item.icon}</i>
               <ListItemText className={classes.inline} primary={item.title} secondary="Jan 28, 2014" />
-            </Link>
-          </div>
-        )}/>
+            </div>
+          )}/>
+        </Link>
       </ListItem>
     )
   })
 }
-
 
 class SideBar extends React.Component {
   constructor(props) {
@@ -100,8 +105,6 @@ class SideBar extends React.Component {
     }]
   }
   render() {
-    console.log('Router', Router)
-    console.log('Route', Route)
     const { classes, theme } = this.props;
     const getMenuList = maptMenuList(Router.route)(classes)
     return (

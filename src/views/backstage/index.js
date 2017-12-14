@@ -100,13 +100,12 @@ class Backstage extends React.Component {
                 <MenuIcon className={classes.middleIcon} />
               </IconButton>
               <Typography type="title" color="inherit" noWrap>
-                Mini variant drawer
+                Backstage For Auto template
               </Typography>
             </Toolbar>
           </AppBar>
           <SideBar open={this.state.open} handleDrawerClose={this.handleDrawerClose}/>
           <main className={classes.content}>
-            <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
             <Route path="/backstage/issue" component={Issue}/>
             <Route path="/backstage/folder" component={Folder}/>
           </main>
