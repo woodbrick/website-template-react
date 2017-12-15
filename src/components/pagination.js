@@ -157,7 +157,7 @@ class Pagination extends React.Component {
         />
       </div>
     );
-  }
+  } // render
 }
 
 Pagination.propTypes = {
