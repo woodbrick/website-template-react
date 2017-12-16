@@ -43,116 +43,64 @@ const getStateFromProps = props => {
   return { current, display, total };
 };
 
-const Page = ({ value, isActive, onClick, styleButton, stylePrimary }) => {
-  return !styleButton ? (<Button
-    style = { buttonStyle(isActive) }
-    color = { isActive ? 'primary' : 'default' }
-    onClick = { onClick }
-  >{value}</Button>) : (<div
-    style = { isActive ? stylePrimary : styleButton }
-    label = { value.toString() }
-    onClick = { onClick }
-  >
-    {value}
-  </div>)
+const Page = ({ value, isActive, onClick }) => {
+  return (
+    <Button
+      style = { buttonStyle(isActive) }
+      color = { isActive ? 'primary' : 'default' }
+      onClick = { onClick }
+      >{value}</Button>
+  )
 
 };
 Page.propTypes = {
   value: PropTypes.number,
   isActive: PropTypes.bool,
   onClick: PropTypes.func,
-  styleButton: PropTypes.object,
-  stylePrimary: PropTypes.object,
 };
 
-const FirstPageLink = ({ onClick, styleFirstPageLink }) => {
-  return !styleFirstPageLink ? (<Button
-    style = { buttonStyle(false) }
-    onClick = { onClick }
-  ><i className="material-icons">first_page</i></Button>) : (<div
-    style = { styleFirstPageLink }
-    onClick = { onClick }
-  />);
+const PageLink = ({ onClick, iconName }) => {
+  return (
+    <Button style = { buttonStyle(false) } onClick = { onClick }>
+      <i className="material-icons">{iconName}</i>
+    </Button>
+  );
 };
 
-FirstPageLink.propTypes = {
+PageLink.propTypes = {
   onClick: PropTypes.func,
-  styleFirstPageLink: PropTypes.object,
-};
+  iconName: PropTypes.string.isRequired
+}
 
-const LastPageLink = ({ onClick, styleLastPageLink }) => {
-  return !styleLastPageLink ? (<Button
-    style = { buttonStyle(false) }
-    onClick = { onClick }
-  ><i className="material-icons">last_page</i></Button>) : (<div
-    style = { styleLastPageLink }
-    onClick = { onClick }
-  />);
-};
-
-LastPageLink.propTypes = {
-  onClick: PropTypes.func,
-  styleLastPageLink: PropTypes.object,
-};
+function PageList(props) {
+  return props.pages.map((page, k) => (
+    <Page
+      key = { k }
+      value = { page }
+      isActive = { props.current === page }
+      onClick = { () => props.setCurrent(page) }
+    />
+  ))
+}
 
 class Pagination extends React.Component {
 
-  constructor(props) {
-    super(props);
-    const tem = getStateFromProps(props);
-    this.setCurrent = this.setCurrent.bind(this);
-
-    this.state = {
-      ...tem,
-      ...calculateRange(tem),
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const tem = getStateFromProps(nextProps);
-    this.setState({
-      ...tem,
-      ...calculateRange(tem),
-    });
-  }
-
   setCurrent(current) {
-    const tem = { ...this.state, current };
-    this.props.onChange(current);
-    this.setState({
-      ...tem,
-      ...calculateRange(tem),
-    });
+    this.props.onChange(current)
   }
 
   render() {
     const array = [];
-    for (let i = this.state.start; i <= this.state.end; i += 1) {
+    let {current, display, total} = getStateFromProps(this.props)
+    let {end, start} = calculateRange({current, display, total})
+    for (let i = start; i <= end; i += 1) {
       array.push(i);
     }
-
     return (
       <div style={{display: 'flex'}}>
-        <FirstPageLink
-          onClick = { () => this.setCurrent(1) }
-          styleFirstPageLink = { this.props.styleFirstPageLink }
-        />
-        {
-            array.map((page, k) => (
-              <Page
-                key = { k }
-                value = { page }
-                isActive = { this.state.current === page }
-                onClick = { () => this.setCurrent(page) }
-                styleButton = { this.props.styleButton }
-                stylePrimary = { this.props.stylePrimary }
-              />
-            ))
-          }
-        <LastPageLink
-          onClick = { () => this.setCurrent(this.state.total) }
-          styleLastPageLink = { this.props.styleLastPageLink }
-        />
+        <PageLink onClick={ this.setCurrent.bind(this, 1) } iconName="first_page" />
+        <PageList setCurrent={ this.setCurrent.bind(this) } pages={array} current={current} />
+        <PageLink onClick={ this.setCurrent.bind(this, total) } iconName="last_page" />
       </div>
     );
   } // render
@@ -171,18 +119,10 @@ Pagination.propTypes = {
   onChange: PropTypes.func,
 
   styleRoot: PropTypes.object,
-  styleFirstPageLink: PropTypes.object,
-  styleLastPageLink: PropTypes.object,
-  styleButton: PropTypes.object,
-  stylePrimary: PropTypes.object,
 };
 
 Pagination.defaultProps = {
-  styleRoot: null,
-  styleFirstPageLink: null,
-  styleLastPageLink: null,
-  styleButton: null,
-  stylePrimary: null,
+  styleRoot: null
 };
 
 Pagination.displayName = 'Pagination';
@@ -194,9 +134,8 @@ function PaginateComponent(WrappedComponent) {
       this.changePage = this.changePage.bind(this)
     }
     changePage(current) {
-      this.refs.WrappedComponent &&
-      this.refs.WrappedComponent.changePage &&
-      this.refs.WrappedComponent.changePage(current)
+      this.props.changePage &&
+      this.props.changePage(current)
     }
     render() {
       return (
