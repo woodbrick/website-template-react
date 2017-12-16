@@ -26,6 +26,11 @@ function BasicCells(props) {
       <TableCell numeric={item.numeric} key={i}>{item.title}</TableCell>)
   )
 }
+
+BasicRows.propTypes = {
+  cols: PropTypes.array.isRequired
+}
+
 function BasicRows(props) {
   let mapRow = getTableRowData(props.cols)
   return (
@@ -36,6 +41,12 @@ function BasicRows(props) {
     )
   )
 }
+
+BasicRows.propTypes = {
+  rows: PropTypes.array.isRequired,
+  cols: PropTypes.array.isRequired
+}
+
 function BasicTable(props) {
   const { classes } = props;
   return (
