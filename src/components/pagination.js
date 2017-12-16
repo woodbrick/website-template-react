@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-// import NavigationFirstPage from 'material-ui-icons/first-page';
-// import NavigationLastPage from 'material-ui-icons/last-page';
+import { observer } from 'mobx'
 
 const calculateRange = arg => {
   const { total, current, display } = arg;
