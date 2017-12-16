@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import { observer } from 'mobx'
 
 const calculateRange = arg => {
   const { total, current, display } = arg;
@@ -187,4 +186,34 @@ Pagination.defaultProps = {
 };
 
 Pagination.displayName = 'Pagination';
-export default Pagination;
+
+function PaginateComponent(WrappedComponent) {
+  return class pagedComponent extends React.Component{
+    constructor(props) {
+      super(props)
+      this.changePage = this.changePage.bind(this)
+    }
+    changePage(current) {
+      this.refs.WrappedComponent &&
+      this.refs.WrappedComponent.changePage &&
+      this.refs.WrappedComponent.changePage(current)
+    }
+    render() {
+      return (
+        <div className="paged-component">
+          <WrappedComponent ref="WrappedComponent" {...this.props}/>
+          <Pagination
+            total = { this.props.total }
+            current = { this.props.current }
+            display = { this.props.display }
+            onChange = { current => this.changePage(current) }
+          />
+        </div>
+      )
+    }
+  }
+}
+
+export {PaginateComponent}
+
+export default Pagination

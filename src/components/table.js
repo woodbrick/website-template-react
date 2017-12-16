@@ -15,47 +15,39 @@ const styles = theme => ({
   },
 });
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
+const getTableRowData = cols => row =>
+  cols.map(c => (
+    {title: row[c.prop], numeric: c.numeric}
+  ))
+
+function BasicCells(props) {
+  return (
+    props.cols.map((item, i) => 
+      <TableCell numeric={item.numeric} key={i}>{item.title}</TableCell>)
+  )
 }
-
-const data = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
+function BasicRows(props) {
+  let mapRow = getTableRowData(props.cols)
+  return (
+    props.rows.map(row => 
+      <TableRow key={row.id}>
+        <BasicCells cols={mapRow(row)} />
+      </TableRow>
+    )
+  )
+}
 function BasicTable(props) {
   const { classes } = props;
-
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell numeric>Calories</TableCell>
-            <TableCell numeric>Fat (g)</TableCell>
-            <TableCell numeric>Carbs (g)</TableCell>
-            <TableCell numeric>Protein (g)</TableCell>
+            <BasicCells cols={props.cols} />
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(n => {
-            return (
-              <TableRow key={n.id}>
-                <TableCell>{n.name}</TableCell>
-                <TableCell numeric>{n.calories}</TableCell>
-                <TableCell numeric>{n.fat}</TableCell>
-                <TableCell numeric>{n.carbs}</TableCell>
-                <TableCell numeric>{n.protein}</TableCell>
-              </TableRow>
-            );
-          })}
+          <BasicRows rows={props.rows} cols={props.cols} />
         </TableBody>
       </Table>
     </Paper>
