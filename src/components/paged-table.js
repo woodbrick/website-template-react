@@ -9,11 +9,11 @@ class PagedSyncTable extends React.Component {
   constructor(props) {
     super(props);
     this.setTotal = this.setTotal.bind(this);
-    this.setDisplay = this.setDisplay.bind(this);
+    this.setRange = this.setRange.bind(this);
     this.state = {
       total: 20,
-      display: 7,
-      number: 7,
+      range: 10,
+      number: 1,
     };
   }
   setTotal(event, total) {
@@ -31,20 +31,10 @@ class PagedSyncTable extends React.Component {
     }
   }
  
-  setDisplay(event, display) {
-    // eslint-disable-next-line no-param-reassign
-    display = display.trim();
-    if (display.match(/^\d*$/)) {
-      if (display !== '') {
-        // eslint-disable-next-line no-param-reassign
-        display = parseInt(display, 10);
-      } else {
-        // eslint-disable-next-line no-param-reassign
-        display = 0;
-      }
- 
-      this.setState({ display })
-    }
+  setRange(range) {
+    range = parseInt(range, 10)
+    range = range === +range ? range : 0
+    this.setState({ range })
   }
  
   render() {
@@ -53,14 +43,14 @@ class PagedSyncTable extends React.Component {
           <PagedTable
             total = { this.state.total }
             current = { this.state.number }
-            display = { this.state.display }
+            range = { this.state.range }
             changePage = { number => this.setState({ number }) }
             rows = {this.props.rows}
             cols = {this.props.cols}
           />
       </div>
     )
-  }
+  } // render
 }
 
 export default PagedSyncTable

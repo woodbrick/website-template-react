@@ -1,5 +1,4 @@
 import PagedTable from '../../components/paged-table'
-import Table from '../../components/table'
 import React from 'react'
 
 let id = 0;
