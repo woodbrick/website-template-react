@@ -2,49 +2,38 @@
 import React from 'react'
 import Table from './table'
 import {PaginateComponent} from './pagination'
+import {observer} from 'mobx-react'
 
 const PagedTable = PaginateComponent(Table)
 
+const getInt = (num, defaultValue=0) => {
+  num = parseInt(num, 10)
+  return num === +num ? num : defaultValue
+}
 class PagedSyncTable extends React.Component {
   constructor(props) {
     super(props);
     this.setTotal = this.setTotal.bind(this);
     this.setRange = this.setRange.bind(this);
-    this.state = {
-      total: 20,
-      range: 10,
-      number: 1,
-    };
   }
-  setTotal(event, total) {
-    // eslint-disable-next-line no-param-reassign
-    total = total.trim();
-    if (total.match(/^\d*$/)) {
-      if (total !== '') {
-        // eslint-disable-next-line no-param-reassign
-        total = parseInt(total, 10);
-      } else {
-        // eslint-disable-next-line no-param-reassign
-        total = 0;
-      }
-      this.setState({ total })
-    }
+  setTotal(total) {
+    this.props.pageInfo.total = getInt(total)
   }
  
   setRange(range) {
     range = parseInt(range, 10)
     range = range === +range ? range : 0
-    this.setState({ range })
+    this.props.range = range
   }
  
   render() {
     return (
       <div>
           <PagedTable
-            total = { this.state.total }
-            current = { this.state.number }
-            range = { this.state.range }
-            changePage = { number => this.setState({ number }) }
+            total = { this.props.store.total }
+            current = { this.props.store.number }
+            range = { this.props.store.range }
+            changePage = { number => this.props.store.number = number }
             rows = {this.props.rows}
             cols = {this.props.cols}
           />
@@ -53,4 +42,4 @@ class PagedSyncTable extends React.Component {
   } // render
 }
 
-export default PagedSyncTable
+export default observer(PagedSyncTable)
