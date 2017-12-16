@@ -27,10 +27,6 @@ function BasicCells(props) {
   )
 }
 
-BasicRows.propTypes = {
-  cols: PropTypes.array.isRequired
-}
-
 function BasicRows(props) {
   let mapRow = getTableRowData(props.cols)
   return (
@@ -40,11 +36,6 @@ function BasicRows(props) {
       </TableRow>
     )
   )
-}
-
-BasicRows.propTypes = {
-  rows: PropTypes.array.isRequired,
-  cols: PropTypes.array.isRequired
 }
 
 function BasicTable(props) {
@@ -67,6 +58,8 @@ function BasicTable(props) {
 
 BasicTable.propTypes = {
   classes: PropTypes.object.isRequired,
+  rows: PropTypes.array.isRequired,
+  cols: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(BasicTable);
