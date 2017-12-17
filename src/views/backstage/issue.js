@@ -8,7 +8,6 @@ let store = observable({
   number: 1,
 })
 
-
 let id = 0;
 function createData(name, calories, fat, carbs, protein) {
   id += 1;
@@ -31,12 +30,7 @@ let cols = [
   {title: 'Protein (g)', prop:'protein', numeric: true}
 ]
 
-
 class Issue extends React.Component {
-  constructor(props) {
-    super(props)
-    console.log(props)
-  }
   render() {
     return (
       <div>

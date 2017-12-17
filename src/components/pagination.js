@@ -112,13 +112,13 @@ Pagination.defaultProps = {
   total: 1,
   current: 1,
   range: 1,
-  onChange: () => console.error("Pagination onChange not defined!")
+  onChange: () => {throw "Pagination onChange not defined!"}
 };
 
 Pagination.displayName = 'Pagination';
 
 function PaginateComponent(WrappedComponent) {
-  return class pagedComponent extends React.Component{
+  class PagedComponent extends React.Component{
     constructor(props) {
       super(props)
       this.changePage = this.changePage.bind(this)
@@ -130,7 +130,7 @@ function PaginateComponent(WrappedComponent) {
     render() {
       return (
         <div className="paged-component">
-          <WrappedComponent ref="WrappedComponent" {...this.props}/>
+          <WrappedComponent {...this.props}/>
           <Pagination
             total = { this.props.total }
             current = { this.props.current }
@@ -141,7 +141,17 @@ function PaginateComponent(WrappedComponent) {
       )
     } // render
   }
+
+  PagedComponent.propTypes = {
+    changePage: PropTypes.function,
+    total: PropTypes.number,
+    current: PropTypes.number,
+    range: PropTypes.number
+  };
+
+  return PagedComponent
 }
+
 
 export {PaginateComponent}
 

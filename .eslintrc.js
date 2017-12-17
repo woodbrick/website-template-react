@@ -10,10 +10,13 @@ module.exports = {
       browser: true,
     },
     // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-    extends: 'standard',
+    extends: [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
     // required to lint *.vue files
     plugins: [
-      'html'
+      "react"
     ],
     // add your custom rules here
     'rules': {
@@ -25,7 +28,9 @@ module.exports = {
       'space-before-function-paren': ["warn", "never"],
       // allow debugger during development
       'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-      'no-extra-semi': ["off", "always"]
+      'no-extra-semi': ["off", "always"],
+      // 'semi': ["off"],
+      'react/no-children-prop': ["off"]
     }
   }
   

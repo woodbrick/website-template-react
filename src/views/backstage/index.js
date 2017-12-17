@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import MenuIcon from 'material-ui-icons/Menu';
-import IconButton from 'material-ui/IconButton';
-import { Route } from 'react-router-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
+import classNames from 'classnames'
+import AppBar from 'material-ui/AppBar'
+import Toolbar from 'material-ui/Toolbar'
+import Typography from 'material-ui/Typography'
+import MenuIcon from 'material-ui-icons/Menu'
+import IconButton from 'material-ui/IconButton'
+import { Route } from 'react-router-dom'
 import SideBar from '../../components/side-bar'
 import Issue from './issue'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 const styles = theme => ({
   root: {
     width: '100%',
@@ -57,7 +57,7 @@ const styles = theme => ({
       marginTop: 64,
     },
   }
-});
+})
 
 class Folder extends React.Component {
   render() {
@@ -68,18 +68,18 @@ class Folder extends React.Component {
 class Backstage extends React.Component {
   state = {
     open: false,
-  };
+  }
 
   handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
+    this.setState({ open: true })
+  }
 
   handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
+    this.setState({ open: false })
+  }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>
@@ -104,13 +104,13 @@ class Backstage extends React.Component {
           </main>
         </div>
       </div>
-    );
+    )
   }
 }
 
 Backstage.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles, { withTheme: true })(Backstage);
+export default withStyles(styles, { withTheme: true })(Backstage)

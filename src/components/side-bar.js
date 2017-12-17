@@ -9,7 +9,7 @@ import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -74,21 +74,19 @@ const styles = theme => ({
   }
 });
 
-const maptMenuList = route => classes => arr => {
-  return arr.map((item, index) => {
-    return (
-      <ListItem button key={index} className={classes.menuItem}>
-        <Link to={item.route} className={classes.menuLink}>
-          <Route path={item.route} exact={true} children={({ match }) => (
-            <div className={match ? classes.active : classes.inActive}>
-              <i className={classNames("material-icons", classes.middleIcon)}>{item.icon}</i>
-              <ListItemText className={classes.inline} primary={item.title} secondary="Jan 28, 2014" />
-            </div>
-          )}/>
-        </Link>
-      </ListItem>
-    )
-  })
+const maptMenuList = classes => arr => {
+  return arr.map((item, index) => (
+    <ListItem button key={index} className={classes.menuItem}>
+      <Link to={item.route} className={classes.menuLink}>
+        <Route path={item.route} exact={true} children={({ match }) => (
+          <div className={match ? classes.active : classes.inActive}>
+            <i className={classNames("material-icons", classes.middleIcon)}>{item.icon}</i>
+            <ListItemText className={classes.inline} primary={item.title} secondary="Jan 28, 2014" />
+          </div>
+        )}/>
+      </Link>
+    </ListItem>
+  ))
 }
 
 class SideBar extends React.Component {
@@ -106,7 +104,7 @@ class SideBar extends React.Component {
   }
   render() {
     const { classes, theme } = this.props;
-    const getMenuList = maptMenuList(Router.route)(classes)
+    const getMenuList = maptMenuList(classes)
     return (
       <Drawer
         type="permanent"
@@ -134,5 +132,7 @@ class SideBar extends React.Component {
 SideBar.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
+  handleDrawerClose: PropTypes.func,
+  open: PropTypes.bool
 };
 export default withStyles(styles, { withTheme: true })(SideBar);

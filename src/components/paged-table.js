@@ -1,8 +1,9 @@
 
 import React from 'react'
-import Table from './table'
+import PropTypes from 'prop-types'
 import {PaginateComponent} from './pagination'
 import {observer} from 'mobx-react'
+import Table from './table'
 
 const PagedTable = PaginateComponent(Table)
 
@@ -10,6 +11,8 @@ const getInt = (num, defaultValue=0) => {
   num = parseInt(num, 10)
   return num === +num ? num : defaultValue
 }
+
+@observer
 class PagedSyncTable extends React.Component {
   constructor(props) {
     super(props);
@@ -17,13 +20,13 @@ class PagedSyncTable extends React.Component {
     this.setRange = this.setRange.bind(this);
   }
   setTotal(total) {
-    this.props.pageInfo.total = getInt(total)
+    this.props.store.total = getInt(total)
   }
  
   setRange(range) {
     range = parseInt(range, 10)
     range = range === +range ? range : 0
-    this.props.range = range
+    this.props.store.range = range
   }
  
   render() {
@@ -42,4 +45,10 @@ class PagedSyncTable extends React.Component {
   } // render
 }
 
-export default observer(PagedSyncTable)
+PagedSyncTable.propTypes = {
+  store: PropTypes.object,
+  rows: PropTypes.array,
+  cols: PropTypes.array
+};
+
+export default PagedSyncTable
