@@ -14,12 +14,12 @@ class PagedSyncTable extends React.Component {
     return (
       <div>
           <PagedTable
-            total = {pageStore.total}
-            current = {pageStore.current}
-            range = {pageStore.range}
+            total = {pageStore.totalPage}
+            current = {pageStore.currentPage}
+            range = {pageStore.displayPage}
             changePage = {pageStore.changePage}
-            rows = {this.props.rows}
-            cols = {this.props.cols}
+            rows = {pageStore.rows}
+            cols = {pageStore.cols}
           />
       </div>
     )

@@ -9,7 +9,8 @@ import MenuIcon from 'material-ui-icons/Menu'
 import IconButton from 'material-ui/IconButton'
 import { Route } from 'react-router-dom'
 import SideBar from '../../components/side-bar'
-import Issue from './issue'
+import EditTable from './edit-table'
+import ModelIssue from '../../models/issue'
 
 const drawerWidth = 240
 const styles = theme => ({
@@ -99,7 +100,7 @@ class Backstage extends React.Component {
           </AppBar>
           <SideBar open={this.state.open} handleDrawerClose={this.handleDrawerClose}/>
           <main className={classes.content}>
-            <Route path="/backstage/issue" component={Issue}/>
+            <Route path="/backstage/issue" component={() => <EditTable Model={ModelIssue} />}/>
             <Route path="/backstage/folder" component={Folder}/>
           </main>
         </div>
