@@ -30,7 +30,8 @@ module.exports = {
       'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
       'no-extra-semi': ["off", "always"],
       // 'semi': ["off"],
-      'react/no-children-prop': ["off"]
+      'react/no-children-prop': ["off"],
+      'no-console': ["off"]
     }
   }
   

@@ -1,12 +1,7 @@
-import PagedTable from '../../components/paged-table'
 import React from 'react'
-import {observable} from 'mobx'
-
-let store = observable({
-  total: 20,
-  range: 10,
-  number: 1,
-})
+import { Provider } from 'mobx-react';
+import PagedTable from '../../components/paged-table'
+import { pageStore } from '../../components/stores';
 
 let id = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -33,14 +28,15 @@ let cols = [
 class Issue extends React.Component {
   render() {
     return (
+      <Provider pageStore={pageStore}>
       <div>
           <div> issue </div>
           <PagedTable
-            store = {store}
             rows = {rows}
             cols = {cols}
           />
       </div>
+      </Provider>
     )
   }
 }

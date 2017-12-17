@@ -119,14 +119,6 @@ Pagination.displayName = 'Pagination';
 
 function PaginateComponent(WrappedComponent) {
   class PagedComponent extends React.Component{
-    constructor(props) {
-      super(props)
-      this.changePage = this.changePage.bind(this)
-    }
-    changePage(current) {
-      this.props.changePage &&
-      this.props.changePage(current)
-    }
     render() {
       return (
         <div className="paged-component">
@@ -135,7 +127,7 @@ function PaginateComponent(WrappedComponent) {
             total = { this.props.total }
             current = { this.props.current }
             range = { this.props.range }
-            onChange = { current => this.changePage(current) }
+            onChange = { this.props.changePage }
           />
         </div>
       )
@@ -143,7 +135,7 @@ function PaginateComponent(WrappedComponent) {
   }
 
   PagedComponent.propTypes = {
-    changePage: PropTypes.function,
+    changePage: PropTypes.func.isRequired,
     total: PropTypes.number,
     current: PropTypes.number,
     range: PropTypes.number
