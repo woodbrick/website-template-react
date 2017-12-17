@@ -1,117 +1,92 @@
+import './index.css'
+import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Route, Link } from 'react-router-dom'
 import React from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
-import classNames from 'classnames'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
-import Typography from 'material-ui/Typography'
-import MenuIcon from 'material-ui-icons/Menu'
-import IconButton from 'material-ui/IconButton'
-import { Route } from 'react-router-dom'
-import SideBar from '../../components/side-bar'
+// import PropTypes from 'prop-types'
 import EditTable from './edit-table'
 import ModelIssue from '../../models/issue'
 
-const drawerWidth = 240
-const styles = theme => ({
-  root: {
-    width: '100%',
-    height: '100%',
-    zIndex: 1,
-    overflow: 'hidden',
-  },
-  appFrame: {
-    position: 'relative',
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-  },
-  appBar: {
-    position: 'absolute',
-    zIndex: theme.zIndex.navDrawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  content: {
-    width: '100%',
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: 24,
-    height: 'calc(100% - 56px)',
-    marginTop: 56,
-    [theme.breakpoints.up('sm')]: {
-      height: 'calc(100% - 64px)',
-      marginTop: 64,
-    },
-  }
-})
-
-class Folder extends React.Component {
-  render() {
-    return <div> folder </div>
-  }
+const { SubMenu } = Menu;
+const { Header, Content, Sider } = Layout;
+const getMenuList = arr => {
+  return arr.map((item, index) => (
+    <Menu.Item key={index}>
+      <Link to={item.route} className='menu-link'>
+        <Route path={item.route} exact={true} children={({ match }) => (
+          <div className={match ? 'active' : ''}>
+            {item.title}
+          </div>
+        )}/>
+      </Link>
+    </Menu.Item>
+  ))
 }
 
+let menuArr = [{
+  title: 'issues',
+  icon: 'list',
+  route: '/backstage/issue'
+}, {
+  title: 'folders',
+  icon: 'folder',
+  route: '/backstage/folder'
+}]
 class Backstage extends React.Component {
-  state = {
-    open: false,
-  }
-
-  handleDrawerOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleDrawerClose = () => {
-    this.setState({ open: false })
-  }
-
   render() {
-    const { classes } = this.props
     return (
-      <div className={classes.root}>
-        <div className={classes.appFrame}>
-          <AppBar className={classNames(classes.appBar, this.state.open && classes.appBarShift)}>
-            <Toolbar disableGutters={!this.state.open}>
-              <IconButton
-                color="contrast"
-                aria-label="open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(classes.menuButton, this.state.open && classes.hide)}>
-                <MenuIcon className={classes.middleIcon} />
-              </IconButton>
-              <Typography type="title" color="inherit" noWrap>
-                Backstage For Auto template
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <SideBar open={this.state.open} handleDrawerClose={this.handleDrawerClose}/>
-          <main className={classes.content}>
-            <Route path="/backstage/issue" component={() => <EditTable Model={ModelIssue} />}/>
-            <Route path="/backstage/folder" component={Folder}/>
-          </main>
-        </div>
-      </div>
+      <Layout>
+        <Header className="header" style={{display: 'flex'}}>
+          <div className="logo" ><img src="/favicon.ico"></img></div>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={['2']}
+            style={{ lineHeight: '64px' }}
+          >
+            <Menu.Item key="1">nav 1</Menu.Item>
+            <Menu.Item key="2">nav 2</Menu.Item>
+            <Menu.Item key="3">nav 3</Menu.Item>
+          </Menu>
+        </Header>
+        <Layout>
+          <Sider width={200} style={{ background: '#fff' }}>
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+              style={{ height: '100%', borderRight: 0 }}
+            >
+              <SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
+                {getMenuList(menuArr)}
+              </SubMenu>
+              <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
+                <Menu.Item key="5">option5</Menu.Item>
+                <Menu.Item key="6">option6</Menu.Item>
+                <Menu.Item key="7">option7</Menu.Item>
+                <Menu.Item key="8">option8</Menu.Item>
+              </SubMenu>
+              <SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
+                <Menu.Item key="9">option9</Menu.Item>
+                <Menu.Item key="10">option10</Menu.Item>
+                <Menu.Item key="11">option11</Menu.Item>
+                <Menu.Item key="12">option12</Menu.Item>
+              </SubMenu>
+            </Menu>
+          </Sider>
+          <Layout style={{ padding: '0 24px 24px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>List</Breadcrumb.Item>
+              <Breadcrumb.Item>App</Breadcrumb.Item>
+            </Breadcrumb>
+            <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
+              <Route path="/backstage/issue" component={() => <EditTable Model={ModelIssue} />}/>
+            </Content>
+          </Layout>
+        </Layout>
+      </Layout>
     )
   }
 }
 
-Backstage.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-}
-
-export default withStyles(styles, { withTheme: true })(Backstage)
+export default Backstage

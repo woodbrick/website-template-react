@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {FieldTypes} from '../../components/fields'
-import { Provider } from 'mobx-react';
+// import {FieldTypes} from '../../components/fields'
+import { Provider } from 'mobx-react'
 import PagedTable from '../../components/paged-table'
-import { pageStore } from './stores';
+import { pageStore } from './stores'
 
 let id = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -37,7 +37,7 @@ pageStore.loadRows = () => {
     setTimeout(() => {
       resolve({
         rows: rows,
-        total: 10
+        total: 20
       })
     }, 100)
   })
@@ -57,19 +57,13 @@ class EditTable extends React.Component {
       let suffix = value.unit ? `(${value.unit})` : ''
       cols.push({
         title: `${uppercaseFirst(key)} ${suffix}`,
-        prop: key,
-        numeric: value.type === FieldTypes.number
+        dataIndex: key,
+        key: key,
+        onFilter: (value, record) => record[key].includes(value),
+        sorter: (a, b) => a[key] - b[key],
       })
       pageStore.cols = cols
     })
-    // let cols = [
-    //   {title: 'Dessert (100g serving)', prop:'name', numeric: false},
-    //   {title: 'Calories', prop:'calories', numeric: true},
-    //   {title: 'Fat (g)', prop:'fat', numeric: true},
-    //   {title: 'Carbs (g)', prop:'carbs', numeric: true},
-    //   {title: 'Protein (g)', prop:'protein', numeric: true}
-    // ]
-    console.log(cols)
   }
   render() {
     let {Model} = this.props

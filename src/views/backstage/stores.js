@@ -4,20 +4,16 @@ const getInt = (num, defaultValue=0) => {
   return num === +num ? num : defaultValue
 }
 class TablePageStore {
-  @observable displayPage = 10
-  @observable totalPage = 10
   @observable currentPage = 1
-  @observable pageSize = 2
+  @observable pageSize = 5
   @observable _rows = []
   @observable _cols = []
+  @observable total = 10
   @computed get rows() {
     return [...this._rows]
   }
   @computed get cols() {
     return [...this._cols]
-  }
-  @computed get colsConunt() {
-    return this.cols.length
   }
   set cols(cols) {
     this._cols = cols
@@ -35,16 +31,26 @@ class TablePageStore {
     if (!rows && !Array.isArray(rows)) return
     let start = (this.currentPage - 1) * this.pageSize
     this._rows = rows.slice(start, start + this.pageSize)
-    this.totalPage = getInt(res.total / this.pageSize)
-    console.log(JSON.stringify(this.rows))
+    this.total = getInt(res.total)
   }
   @action.bound
-  changePage(current) {
+  changePage(current, pageSize) {
     this.currentPage = getInt(current)
+    this.pageSize = getInt(pageSize, 5)
     this.loadRows(this.currentPage, this.pageSize)
     .then(res => {
       this.updateData(res)
     })
+  }
+  @action.bound
+  changePageSize(current, pageSize) {
+    console.log(current, pageSize)
+    // this.currentPage = getInt(current)
+    // this.pageSize = getInt(pageSize)
+    // this.loadRows(this.currentPage, this.pageSize)
+    // .then(res => {
+    //   this.updateData(res)
+    // })
   }
 }
 
