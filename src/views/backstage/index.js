@@ -1,8 +1,8 @@
 import './index.css'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import EditTable from './edit-table'
 import ModelIssue from '../../models/issue'
 
@@ -80,7 +80,10 @@ class Backstage extends React.Component {
               <Breadcrumb.Item>App</Breadcrumb.Item>
             </Breadcrumb>
             <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-              <Route path="/backstage/issue" component={() => <EditTable Model={ModelIssue} />}/>
+              <Switch>
+                <Route path="/backstage/issue" component={() => <EditTable Model={ModelIssue} />}/>
+                <Route component={NoMatch}/>
+              </Switch>
             </Content>
           </Layout>
         </Layout>
@@ -88,5 +91,12 @@ class Backstage extends React.Component {
     )
   }
 }
-
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>No match for <code>{location.pathname}</code></h3>
+  </div>
+)
+NoMatch.propTypes = {
+  location: PropTypes.object
+}
 export default Backstage
